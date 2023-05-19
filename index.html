@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <title>Socket.IO chat</title>
+    <link rel="stylesheet" href="./styles/index.css">
+</head>
+
+<body>
+
+    <h2>Conversation en Latin</h2>
+    
+    <img src="/public/images/avatar-20.svg" alt="Avatar 3" class="avatar">
+
+    <ul id="messages">
+        <li class="emitter">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos, unde.</li>
+        <li class="receiver">Nam fuga inventore nihil ea accusamus dolorum ullam sit vero.</li>
+        <li class="emitter">Sed, fugit laborum doloremque autem ex delectus dolor ab perspiciatis.</li>
+        <li class="receiver">Facilis corporis pariatur magni iure! Rerum at nemo vel velit?</li>
+        <li class="emitter">Tempora quas, soluta dolorem veniam pariatur laborum hic vero dolor.</li>
+        <li class="receiver">Iure, consequuntur? Reiciendis possimus deleniti iusto, delectus odit cum voluptatum.</li>
+        <li class="emitter">Sit repudiandae vero illo fuga ut totam magni, architecto necessitatibus.</li>
+    </ul>
+    <form id="form" action="">
+        <input id="input" autocomplete="off" placeholder="Lorem ipsum" />
+        <button>Send</button>
+    </form>
+    <!--<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>-->
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script>
+      var socket = io();
+  
+      var messages = document.getElementById('messages');
+      var form = document.getElementById('form');
+      var input = document.getElementById('input');
+      var inputPseudo = document.getElementById('inputPseudo');
+  
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (input.value) {
+          socket.emit('chat message', inputPseudo.value, input.value, Date.now());
+          input.value = '';
+        }
+      });
+  
+      socket.on('chat message', function(pseudo, msg, date) {
+        var item = document.createElement('li');
+        item.textContent = pseudo + ' ' + msg + ' ' + date;
+        messages.appendChild(item);
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+    </script>
+</body>
+
+</html>
